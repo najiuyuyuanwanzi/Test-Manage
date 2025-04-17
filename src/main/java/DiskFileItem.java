@@ -257,7 +257,7 @@ public class DiskFileItem
      */
     @Override
     public boolean isInMemory() {
-        if (cachedContent != null) {
+        if (cachedContent == null) {
             return true;
         }
         return dfos.isInMemory();
