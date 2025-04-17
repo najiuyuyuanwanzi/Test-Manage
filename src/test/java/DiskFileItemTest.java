@@ -46,23 +46,16 @@ public class DiskFileItemTest {
     }
 
     // ========== 测试3：isInMemory() 缺陷测试 ==========
-   @Test
+  @Test
     public void testIsInMemory() throws IOException {
         DiskFileItem item2 = new DiskFileItem("bigfile", "application/octet-stream", false, "big.bin", 10, tempDir);
-
-        // 创建一个超过内存阈值的文件
-        byte[] bigData = new byte[1024 * 10];  // 比内存阈值大
+        byte[] bigData = new byte[1024 * 1024]; // 1MB 数据
         Arrays.fill(bigData, (byte) 1);
-
-        // 写入大数据
         try (OutputStream os = item2.getOutputStream()) {
             os.write(bigData);
+        }
+        assertFalse("isInMemory() 方法返回结果不正确", item2.isInMemory());
     }
-
-    // 如果数据超过内存限制，应该返回 false
-    assertFalse("isInMemory() 方法返回结果不正确", item2.isInMemory());
-}
-
 
     // ========== 测试4：getName() 方法 ==========
     @Test
